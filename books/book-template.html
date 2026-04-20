@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- ✏️ Змінити назву книжки -->
+<title>Тінь Чорнобиля — Library Zone</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#191919;--w:#fff;--ac:#F79C00;
+  --acd:rgba(247,156,0,.12);--acg:rgba(247,156,0,.4);
+  --gr:#222;--gm:#383838;--mu:rgba(255,255,255,.42);
+  --bl:#40c4ff;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--w);font-family:'Exo 2',sans-serif;font-weight:300;overflow-x:hidden;cursor:crosshair;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.28;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);}
+
+/* CURSOR */
+.cdot,.cring{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);}
+.cdot{width:6px;height:6px;background:var(--ac);border-radius:50%;box-shadow:0 0 10px var(--ac);}
+.cring{width:28px;height:28px;border:1px solid var(--ac);border-radius:50%;transition:all .12s ease;opacity:.6;}
+@media(hover:none){.cdot,.cring{display:none;}body{cursor:auto;}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:linear-gradient(to bottom,rgba(25,25,25,.98),transparent);backdrop-filter:blur(2px);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo img{width:38px;height:38px;}
+.nav-logo-text{font-family:'Raleway',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.12em;color:var(--w);line-height:1;}
+.nav-logo-text span{color:var(--ac);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.18em;color:var(--mu);text-decoration:none;text-transform:uppercase;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--ac);transform:scaleX(0);transition:transform .25s ease;}
+.nav-links a:hover{color:var(--ac);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px;z-index:102;}
+.burger span{width:24px;height:2px;background:var(--w);display:block;transition:all .3s ease;}
+.burger.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.burger.active span:nth-child(2){opacity:0;}
+.burger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mmenu{position:fixed;inset:0;z-index:99;background:rgba(25,25,25,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);}
+.mmenu.open{transform:translateX(0);}
+.mmenu ul{list-style:none;display:flex;flex-direction:column;gap:22px;text-align:center;}
+.mmenu a{font-family:'Raleway',sans-serif;font-weight:700;font-size:1.9rem;letter-spacing:.06em;text-transform:uppercase;color:var(--w);text-decoration:none;transition:color .2s;}
+.mmenu a:hover,.mmenu a:active{color:var(--ac);}
+.mmenu-tag{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.25em;color:var(--mu);}
+
+/* SHARED */
+section{position:relative;z-index:2;}
+.cnt{max-width:1200px;margin:0 auto;padding:0 48px;}
+.stag{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.28em;color:var(--ac);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+.stag::before{content:'//';opacity:.5;}
+.rv{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+
+/* BUTTONS */
+.btn-p{display:inline-flex;align-items:center;gap:10px;background:var(--ac);color:#000;font-family:'Raleway',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.08em;padding:13px 30px;text-decoration:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all .2s ease;position:relative;overflow:hidden;}
+.btn-p::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.2);transform:translateX(-100%);transition:transform .3s ease;}
+.btn-p:hover::before{transform:translateX(0);}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--acg);}
+
+/* BREADCRUMB */
+.breadcrumb{position:relative;z-index:2;padding:100px 0 0;}
+.breadcrumb-inner{display:flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.18em;color:var(--mu);text-transform:uppercase;}
+.breadcrumb-inner a{color:var(--mu);text-decoration:none;transition:color .2s;}
+.breadcrumb-inner a:hover{color:var(--ac);}
+.breadcrumb-inner .sep{opacity:.35;}
+.breadcrumb-inner .cur{color:var(--ac);}
+
+/* BOOK HERO */
+.book-hero{padding:40px 0 80px;position:relative;z-index:2;}
+.book-hero-grid{display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:start;}
+
+/* Cover — одне зображення без каруселі */
+.book-cover-wrap{position:relative;}
+.book-cover-main{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;border:1px solid var(--gm);cursor:zoom-in;}
+.book-cover-placeholder{width:100%;aspect-ratio:2/3;background:linear-gradient(135deg,#1d1d1d,#272727 50%,#1d1d1d);border:1px solid var(--gm);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.book-cover-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 20px,rgba(247,156,0,.025) 20px,rgba(247,156,0,.025) 21px);}
+.book-cover-ph-text{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.2em;color:var(--mu);position:relative;z-index:1;}
+.book-cover-wrap::after{content:'';display:block;height:3px;background:var(--ac);margin-top:2px;}
+
+/* Book info — права колонка */
+.book-status-badge{display:inline-flex;align-items:center;font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.16em;padding:5px 12px;text-transform:uppercase;margin-bottom:20px;}
+.s-done{background:rgba(247,156,0,.12);color:var(--ac);border:1px solid rgba(247,156,0,.38);}
+.s-wip{background:rgba(64,196,255,.08);color:var(--bl);border:1px solid rgba(64,196,255,.3);}
+.book-num{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.28em;color:var(--mu);margin-bottom:8px;display:flex;align-items:center;gap:9px;}
+.book-num::before{content:'//';opacity:.5;}
+.book-title-main{font-family:'Raleway',sans-serif;font-weight:700;font-size:clamp(2rem,4vw,3.2rem);line-height:1.05;letter-spacing:.02em;margin-bottom:8px;}
+.book-author-line{font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.18em;color:var(--ac);margin-bottom:28px;}
+
+/* META CHIPS */
+.book-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;}
+.meta-chip{font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.14em;padding:5px 12px;background:var(--gr);border:1px solid var(--gm);color:var(--mu);text-transform:uppercase;}
+/*
+  ✏️ КОЛІР ТЕГУ ПІДСЕРІЇ:
+  Клас .meta-chip-series відповідає за колір тегу підсерії (Хемуль, Пригоршня тощо).
+  Щоб змінити колір — відредагуй значення нижче:
+    background: колір фону тегу
+    color: колір тексту
+    border-color: колір рамки
+  Поточний колір: синій (--bl = #40c4ff)
+*/
+.meta-chip-series{font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.14em;padding:5px 12px;text-transform:uppercase;background:rgba(64,196,255,.08);color:var(--bl);border:1px solid rgba(64,196,255,.3);}
+
+/* ANNOTATION */
+.book-annotation-label{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.22em;color:var(--ac);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.book-annotation-label::before{content:'';display:block;width:24px;height:1px;background:var(--ac);}
+.book-annotation{font-size:1rem;font-weight:300;line-height:1.85;color:rgba(255,255,255,.72);margin-bottom:36px;border-left:2px solid rgba(247,156,0,.3);padding-left:20px;}
+
+/* DOWNLOAD */
+.download-label{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.22em;color:var(--mu);text-transform:uppercase;margin-bottom:16px;}
+.download-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:32px;}
+.dl-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;background:var(--gr);border:1px solid var(--gm);text-decoration:none;transition:all .2s ease;cursor:pointer;position:relative;overflow:hidden;}
+.dl-btn::before{content:'';position:absolute;inset:0;background:rgba(247,156,0,.06);transform:translateY(100%);transition:transform .3s ease;}
+.dl-btn:hover::before{transform:translateY(0);}
+.dl-btn:hover{border-color:var(--ac);transform:translateY(-2px);}
+.dl-btn-icon{font-size:1.4rem;line-height:1;}
+.dl-btn-format{font-family:'Raleway',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.08em;color:var(--ac);}
+.dl-btn-hint{font-family:'Share Tech Mono',monospace;font-size:.48rem;letter-spacing:.1em;color:var(--mu);}
+
+/* TG CTA рядок */
+.book-tg-cta{display:flex;align-items:center;gap:14px;padding:20px 24px;border:1px solid var(--gm);background:rgba(255,255,255,.02);}
+.book-tg-cta p{font-size:.88rem;font-weight:300;color:rgba(255,255,255,.6);line-height:1.5;}
+.book-tg-cta p strong{color:var(--w);font-weight:500;}
+
+/* ACCORDION — анотація Jupiter Team */
+.jt-accordion{margin-top:48px;border-top:1px solid var(--gm);}
+.jt-accordion-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 0;background:none;border:none;cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.28em;color:var(--ac);text-transform:uppercase;transition:opacity .2s;}
+.jt-accordion-btn:hover{opacity:.75;}
+.jt-accordion-btn-left{display:flex;align-items:center;gap:9px;}
+.jt-accordion-btn-left::before{content:'//';opacity:.5;color:var(--ac);}
+.jt-accordion-arrow{font-size:1rem;transition:transform .35s ease;flex-shrink:0;}
+.jt-accordion-btn.open .jt-accordion-arrow{transform:rotate(45deg);}
+.jt-accordion-body{max-height:0;overflow:hidden;transition:max-height .5s ease,padding .4s ease;padding:0;}
+.jt-accordion-btn.open + .jt-accordion-body{max-height:2000px;padding-bottom:32px;}
+.jt-annotation-text{font-size:.92rem;font-weight:300;line-height:1.9;color:rgba(255,255,255,.62);border-left:2px solid rgba(247,156,0,.25);padding-left:20px;}
+.jt-annotation-text p{margin-bottom:16px;}
+.jt-annotation-text p:last-child{margin-bottom:0;}
+.jt-annotation-text ul{list-style:none;padding-left:0;margin-bottom:16px;}
+.jt-annotation-text ul li{padding-left:20px;position:relative;margin-bottom:8px;}
+.jt-annotation-text ul li::before{content:'·';position:absolute;left:0;color:var(--ac);}
+.jt-annotation-sign{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.15em;color:var(--ac);margin-top:20px;}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.lightbox.open{opacity:1;pointer-events:all;}
+.lightbox img{max-width:90vw;max-height:88vh;object-fit:contain;border:1px solid var(--gm);}
+.lightbox-close{position:absolute;top:24px;right:32px;font-family:'Share Tech Mono',monospace;font-size:1.4rem;color:var(--mu);cursor:pointer;transition:color .2s;background:none;border:none;}
+.lightbox-close:hover{color:var(--ac);}
+
+/* FOOTER */
+footer{padding:28px 48px;border-top:1px solid var(--gm);display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:2;flex-wrap:wrap;gap:16px;}
+.flogo{display:flex;align-items:center;gap:10px;}
+.flogo img{width:32px;height:32px;opacity:.55;}
+.fname{font-family:'Raleway',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase;}
+.fnote{font-family:'Share Tech Mono',monospace;font-size:.56rem;letter-spacing:.08em;color:var(--mu);max-width:480px;line-height:1.7;text-align:right;}
+.fnote a{color:var(--ac);text-decoration:none;}
+.fnote a:hover{text-decoration:underline;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .burger{display:flex;}
+  .cnt{padding:0 24px;}
+  .book-hero-grid{grid-template-columns:1fr;gap:40px;}
+  .book-cover-wrap{max-width:280px;margin:0 auto;}
+  .download-grid{grid-template-columns:repeat(2,1fr);}
+  footer{padding:24px;}
+  .fnote{text-align:left;}
+}
+@media(max-width:480px){
+  .book-tg-cta{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="cdot" id="cdot"></div>
+<div class="cring" id="cring"></div>
+
+<!-- MOBILE MENU -->
+<div class="mmenu" id="mmenu">
+  <span class="mmenu-tag">// LIBRARY ZONE //</span>
+  <ul>
+    <li><a href="/index.html" onclick="closeMM()">Головна</a></li>
+    <li><a href="/index.html#books" onclick="closeMM()">Книжки</a></li>
+    <li><a href="/index.html#support" onclick="closeMM()">Підтримати</a></li>
+    <li><a href="/index.html#cta" onclick="closeMM()">Telegram</a></li>
+    <li><a href="/index.html#faq" onclick="closeMM()">FAQ</a></li>
+  </ul>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/index.html">
+    <!-- ✏️ Логотип підключається як файл. Переконайся що JupiterTeam-Logo.svg лежить в корені репозиторію -->
+    <img src="/JupiterTeam-Logo.svg" alt="Jupiter Team">
+    <div class="nav-logo-text">LIBRARY<span> ZONE</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Головна</a></li>
+    <li><a href="/index.html#books">Книжки</a></li>
+    <li><a href="/index.html#support">Підтримати</a></li>
+    <li><a href="/index.html#cta">Telegram</a></li>
+    <li><a href="/index.html#faq">FAQ</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="cnt">
+    <div class="breadcrumb-inner rv">
+      <a href="/index.html">Library Zone</a>
+      <span class="sep">/</span>
+      <a href="/index.html#books">Книжки</a>
+      <span class="sep">/</span>
+      <!-- ✏️ Змінити на назву книжки -->
+      <span class="cur">Тінь Чорнобиля</span>
+    </div>
+  </div>
+</div>
+
+<!-- BOOK HERO -->
+<section class="book-hero">
+  <div class="cnt">
+    <div class="book-hero-grid">
+
+      <!-- ── ЛІВА КОЛОНКА: одна обкладинка ── -->
+      <div class="book-cover-wrap rv">
+        <!--
+          ✏️ ОБКЛАДИНКА:
+          Варіант A — є зображення (прибери рядки плейсхолдера нижче і розкоментуй):
+            <img id="main-img" class="book-cover-main" src="covers/book1-cover.jpg" alt="Тінь Чорнобиля">
+
+          Варіант B — немає зображення (залиш плейсхолдер):
+        -->
+        <div class="book-cover-placeholder">
+          <span class="book-cover-ph-text">ОБКЛАДИНКА</span>
+        </div>
+        <!-- Розкоментуй коли буде обкладинка:
+        <img id="main-img" class="book-cover-main" src="covers/book1-cover.jpg" alt="Тінь Чорнобиля">
+        -->
+      </div>
+
+      <!-- ── ПРАВА КОЛОНКА: інформація ── -->
+      <div class="book-info rv">
+
+        <!-- ✏️ Статус: s-done = Перекладено, s-wip = В роботі -->
+        <span class="book-status-badge s-done">Перекладено</span>
+
+        <!-- ✏️ Номер книги і назва серії -->
+        <div class="book-num">Книга 01 · Серія S.T.A.L.K.E.R.</div>
+
+        <!-- ✏️ Назва і автор -->
+        <h1 class="book-title-main">Тінь Чорнобиля</h1>
+        <div class="book-author-line">Андрій Лівадний</div>
+
+        <!-- ТЕГИ
+             Чотири стандартних чіпи + один для підсерії з окремим класом.
+             ✏️ Змінити значення на актуальні. -->
+        <div class="book-meta">
+          <!-- ✏️ Рік оригінального релізу -->
+          <span class="meta-chip">Реліз: 2004</span>
+          <!-- ✏️ Рік перекладу Jupiter Team -->
+          <span class="meta-chip">Переклад: 2024</span>
+          <!-- ✏️ Кількість сторінок -->
+          <span class="meta-chip">320 стор.</span>
+          <!--
+            ✏️ ТЕГ ПІДСЕРІЇ — клас meta-chip-series (синій за замовчуванням).
+            Щоб змінити колір — знайди в CSS блок з коментарем
+            "✏️ КОЛІР ТЕГУ ПІДСЕРІЇ" і відредагуй там.
+            Якщо книга не входить до підсерії — видали цей рядок.
+          -->
+          <span class="meta-chip-series">Серія: Хемуль</span>
+        </div>
+
+        <!-- АНОТАЦІЯ КНИГИ -->
+        <div class="book-annotation-label">Анотація</div>
+        <!-- ✏️ Замінити текст анотації на свій -->
+        <p class="book-annotation">
+          Перша книга легендарної серії за мотивами гри S.T.A.L.K.E.R.: Shadow of Chernobyl.
+          Зона відчуження — місце де фізичні закони перестають діяти, де бродять мутанти і
+          мисливці за артефактами. Головний герой опиняється в самому серці Зони і змушений
+          вижити будь-якою ціною.
+        </p>
+
+        <!-- КНОПКИ ЗАВАНТАЖЕННЯ -->
+        <div class="download-label">// Завантажити переклад</div>
+        <div class="download-grid">
+          <!--
+            ✏️ ПОСИЛАННЯ НА ЗАВАНТАЖЕННЯ:
+            Замінити ТВІЙ_ID_XXX на ID файлу з Google Drive.
+            Як знайти ID: відкрий файл на Drive → Поділитися → скопіюй посилання
+            Посилання виглядає так: https://drive.google.com/file/d/XXXXXXX/view
+            ID — це частина між /d/ і /view
+            Пряме посилання: https://drive.google.com/uc?export=download&id=XXXXXXX
+          -->
+          <a class="dl-btn" href="https://drive.google.com/uc?export=download&id=ТВІЙ_ID_PDF"
+             download="tin-chornobylya.pdf" target="_blank">
+            <span class="dl-btn-icon">📄</span>
+            <span class="dl-btn-format">PDF</span>
+            <!-- ✏️ Вкажи розмір файлу -->
+            <span class="dl-btn-hint">~2.1 МБ</span>
+          </a>
+          <a class="dl-btn" href="https://drive.google.com/uc?export=download&id=ТВІЙ_ID_EPUB"
+             download="tin-chornobylya.epub" target="_blank">
+            <span class="dl-btn-icon">📖</span>
+            <span class="dl-btn-format">EPUB</span>
+            <span class="dl-btn-hint">~1.4 МБ</span>
+          </a>
+          <a class="dl-btn" href="https://drive.google.com/uc?export=download&id=ТВІЙ_ID_FB2"
+             download="tin-chornobylya.fb2" target="_blank">
+            <span class="dl-btn-icon">📝</span>
+            <span class="dl-btn-format">FB2</span>
+            <span class="dl-btn-hint">~0.9 МБ</span>
+          </a>
+          <a class="dl-btn" href="https://drive.google.com/uc?export=download&id=ТВІЙ_ID_MOBI"
+             download="tin-chornobylya.mobi" target="_blank">
+            <span class="dl-btn-icon">📱</span>
+            <span class="dl-btn-format">MOBI</span>
+            <span class="dl-btn-hint">~1.8 МБ</span>
+          </a>
+        </div>
+
+        <!-- TELEGRAM рядок -->
+        <div class="book-tg-cta">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="#F79C00" style="flex-shrink:0"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.6 8.2l-2 9.5c-.1.7-.5.8-1.1.5l-3-2.2-1.4 1.4c-.2.2-.3.3-.6.3l.2-3.1 5.6-5c.2-.2-.1-.3-.4-.1L7.3 14.4l-3-.9c-.6-.2-.7-.6.1-1l11.6-4.5c.5-.2 1 .1.6.2z"/></svg>
+          <p><strong>Більше перекладів безкоштовно</strong> — підписуйся на Telegram-канал.</p>
+          <!-- ✏️ Замінити посилання -->
+          <a href="https://t.me/YOUR_CHANNEL" target="_blank" class="btn-p" style="white-space:nowrap;flex-shrink:0;">Telegram</a>
+        </div>
+
+        <!-- АКОРДЕОН — Звернення Jupiter Team (розгортається при кліку) -->
+        <div class="jt-accordion rv">
+          <button class="jt-accordion-btn" id="jt-btn" onclick="toggleJT()">
+            <span class="jt-accordion-btn-left">Звернення від Jupiter Team</span>
+            <span class="jt-accordion-arrow" id="jt-arrow">+</span>
+          </button>
+          <div class="jt-accordion-body" id="jt-body">
+            <div class="jt-annotation-text">
+              <p>Цей переклад створений Jupiter Team — фанатською спільнотою, яка прагне зробити книги всесвіту S.T.A.L.K.E.R. доступними для україномовної аудиторії. Ми не переслідуємо комерційної мети: усі наші переклади є фанатськими та неофіційними, створеними виключно з любові до всесвіту Зони та бажання підтримати розвиток українського культурного простору.</p>
+              <p>Серія S.T.A.L.K.E.R. є глибоко пов'язаною з українською культурою. Її джерелом натхнення стала трагедія Чорнобильської катастрофи, а створенням займалася українська студія GSC Game World. На жаль, через історичні обставини значна частина супутнього контенту, зокрема книжкова серія, була реалізована в російськомовному середовищі.</p>
+              <p>Ми вважаємо, що цей всесвіт, за своїм духом і суттю, є українським. Нашою місією є "повернення" серії S.T.A.L.K.E.R. у її природне середовище — до україномовної аудиторії. Це не лише про переклад тексту, а й про відновлення культурної справедливості. Ми усвідомлюємо, що оригінальні книги написані російськими авторами, проте вважаємо важливим зробити цей контент доступним для українських читачів, аби вони не змушені були звертатися до російськомовних джерел. Наші переклади:</p>
+              <ul>
+                <li>Не мають комерційного характеру та не приносять фінансової вигоди ні нашій команді, ні тим паче авторам країни 404.</li>
+                <li>Є спробою створити альтернативу російськомовному контенту в рамках українського інформаційного простору.</li>
+                <li>Покликані сприяти поширенню української мови та культури.</li>
+              </ul>
+              <p>Ми — звичайна група ентузіастів, які люблять всесвіт S.T.A.L.K.E.R. і хочуть зробити його доступнішим для україномовної аудиторії. Ми віримо, що цей проєкт надихне нове покоління сталкерів досліджувати Зону українською мовою.</p>
+              <p>Оригінальні твори належать їх авторам і правовласникам торгової марки S.T.A.L.K.E.R. Цей переклад є неофіційним фанатським проектом і не має комерційної мети.</p>
+              <p>Дякуємо, що ви з нами! Нехай шлях через Зону буде цікавим, а її секрети відкриються вам мовою вашого серця.</p>
+              <div class="jt-annotation-sign">З повагою, Jupiter Team</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end book-info -->
+    </div><!-- end grid -->
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">
+    <!-- ✏️ Логотип як файл — переконайся що JupiterTeam-Logo.svg є в корені репо -->
+    <img src="/JupiterTeam-Logo.svg" alt="Jupiter Team">
+    <span class="fname">LIBRARY ZONE · JUPITER TEAM</span>
+  </div>
+  <p class="fnote">
+    <!-- ✏️ Замінити посилання на канал -->
+    <a href="https://t.me/YOUR_CHANNEL">Telegram-канал</a> &nbsp;·&nbsp;
+    Оригінальні твори належать їх авторам і правовласникам торгової марки S.T.A.L.K.E.R.<br>
+    Цей переклад є неофіційним фанатським проектом і не має комерційної мети.
+  </p>
+</footer>
+
+<!-- LIGHTBOX (для обкладинки) -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+// Cursor
+const cd=document.getElementById('cdot'),cr=document.getElementById('cring');
+if(window.matchMedia('(hover:hover)').matches){
+  document.addEventListener('mousemove',e=>{
+    cd.style.left=e.clientX+'px';cd.style.top=e.clientY+'px';
+    setTimeout(()=>{cr.style.left=e.clientX+'px';cr.style.top=e.clientY+'px';},60);
+  });
+  document.querySelectorAll('a,button,.dl-btn').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cr.style.transform='translate(-50%,-50%) scale(1.6)';cr.style.opacity='1';});
+    el.addEventListener('mouseleave',()=>{cr.style.transform='translate(-50%,-50%) scale(1)';cr.style.opacity='.6';});
+  });
+}
+
+// Hamburger
+const bgr=document.getElementById('burger'),mm=document.getElementById('mmenu');
+bgr.addEventListener('click',()=>{bgr.classList.toggle('active');mm.classList.toggle('open');document.body.style.overflow=mm.classList.contains('open')?'hidden':'';});
+function closeMM(){bgr.classList.remove('active');mm.classList.remove('open');document.body.style.overflow='';}
+
+// Reveal
+const ro=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*80);ro.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// Lightbox — клік на обкладинку збільшує її
+const mainImg=document.getElementById('main-img');
+if(mainImg){
+  mainImg.addEventListener('click',()=>{
+    document.getElementById('lightbox-img').src=mainImg.src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow='hidden';
+  });
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+// Акордеон — звернення Jupiter Team
+function toggleJT(){
+  const btn=document.getElementById('jt-btn');
+  const arrow=document.getElementById('jt-arrow');
+  btn.classList.toggle('open');
+  arrow.textContent=btn.classList.contains('open')?'×':'+';
+}
+</script>
+</body>
+</html>
