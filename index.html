@@ -257,6 +257,23 @@ footer{padding:28px 48px;border-top:1px solid var(--gm);display:flex;align-items
   .fnote{text-align:left;max-width:100%;}
 }
 
+ /* PARTNERSHIP */
+.partner{padding:80px 0 100px;}
+.ptrgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;}
+.ptrc{aspect-ratio:3/2;position:relative;overflow:hidden;background:var(--gr);}
+.ptr-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1a1a1a,#242424 50%,#1a1a1a);z-index:0;}
+.ptr-bg::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 24px,rgba(247,156,0,.018) 24px,rgba(247,156,0,.018) 25px);}
+.ptr-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35;z-index:1;}
+.ptr-badge{position:absolute;top:14px;left:14px;z-index:3;font-family:'Share Tech Mono',monospace;font-size:.52rem;letter-spacing:.15em;padding:4px 10px;text-transform:uppercase;background:rgba(255,255,255,.04);color:var(--mu);border:1px solid rgba(255,255,255,.1);}
+.ptr-name{position:absolute;bottom:48px;left:0;right:0;text-align:center;z-index:3;font-family:'Raleway',sans-serif;font-weight:700;font-size:1.4rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.ptr-desc{position:absolute;bottom:16px;left:0;right:0;text-align:center;z-index:3;font-family:'Share Tech Mono',monospace;font-size:.56rem;letter-spacing:.1em;color:rgba(255,255,255,.18);line-height:1.6;}
+/* Коли з'явиться реальний партнер — зміни клас на .ptrc-active */
+.ptrc-active .ptr-name{color:var(--w);}
+.ptrc-active .ptr-img{opacity:.5;transition:opacity .3s;}
+.ptrc-active:hover .ptr-img{opacity:.3;}
+.ptrc-active .ptr-badge{background:rgba(247,156,0,.12);color:var(--ac);border-color:rgba(247,156,0,.35);}
+@media(max-width:900px){.ptrgrid{grid-template-columns:1fr;}.ptrc{aspect-ratio:16/6;}} 
+  
 /* ── IMAGE SUPPORT for book covers and support cards */
 .b-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.75;transition:opacity .3s;z-index:1;}
 .bc:hover .b-img{opacity:.45;}
@@ -433,6 +450,47 @@ footer{padding:28px 48px;border-top:1px solid var(--gm);display:flex;align-items
   </div>
 </section>
 
+<!-- PARTNERSHIP -->
+<section class="partner" id="partner">
+  <div class="cnt">
+    <div class="rv">
+      <p class="stag">Партнерство</p>
+      <h2 class="stitle">ПАРТНЕРИ</h2>
+      <p class="si">Ми відкриті до співпраці. Зараз ведемо переговори щодо кількох інтеграцій — слідкуйте за новинами.</p>
+    </div>
+    <div class="ptrgrid rv">
+
+      <div class="ptrc">
+        <div class="ptr-bg"></div>
+        <!-- 📷 Фон картки 1: замінити src, напр. "images/partner1.jpg" -->
+        <img class="ptr-img" src="" alt="" style="display:none" onerror="this.style.display='none'" data-hint="images/partner1.jpg">
+        <span class="ptr-badge">Незабаром</span>
+        <div class="ptr-name">Партнер 1</div>
+        <div class="ptr-desc">Слідкуйте за новинами.<br>Деталі невдовзі.</div>
+      </div>
+
+      <div class="ptrc">
+        <div class="ptr-bg"></div>
+        <!-- 📷 Фон картки 2: замінити src, напр. "images/partner2.jpg" -->
+        <img class="ptr-img" src="" alt="" style="display:none" onerror="this.style.display='none'" data-hint="images/partner2.jpg">
+        <span class="ptr-badge">Незабаром</span>
+        <div class="ptr-name">Партнер 2</div>
+        <div class="ptr-desc">Слідкуйте за новинами.<br>Деталі невдовзі.</div>
+      </div>
+
+      <div class="ptrc">
+        <div class="ptr-bg"></div>
+        <!-- 📷 Фон картки 3: замінити src, напр. "images/partner3.jpg" -->
+        <img class="ptr-img" src="" alt="" style="display:none" onerror="this.style.display='none'" data-hint="images/partner3.jpg">
+        <span class="ptr-badge">Незабаром</span>
+        <div class="ptr-name">Партнер 3</div>
+        <div class="ptr-desc">Слідкуйте за новинами.<br>Деталі невдовзі.</div>
+      </div>
+
+    </div>
+  </div>
+</section>  
+  
 <!-- CTA -->
 <section class="cta" id="cta">
   <div class="cnt" style="display:flex;justify-content:center;">
