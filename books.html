@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Каталог перекладів — Library Zone</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#191919;--w:#fff;--ac:#F79C00;
+  --acd:rgba(247,156,0,.12);--acg:rgba(247,156,0,.4);
+  --gr:#222;--gm:#383838;--mu:rgba(255,255,255,.42);
+  --bl:#40c4ff;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--w);font-family:'Exo 2',sans-serif;font-weight:300;overflow-x:hidden;cursor:crosshair;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.28;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);}
+
+/* CURSOR */
+.cdot,.cring{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);}
+.cdot{width:6px;height:6px;background:var(--ac);border-radius:50%;box-shadow:0 0 10px var(--ac);}
+.cring{width:28px;height:28px;border:1px solid var(--ac);border-radius:50%;transition:all .12s ease;opacity:.6;}
+@media(hover:none){.cdot,.cring{display:none;}body{cursor:auto;}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:linear-gradient(to bottom,rgba(25,25,25,.98),transparent);backdrop-filter:blur(2px);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo img{width:38px;height:38px;}
+.nav-logo-text{font-family:'Raleway',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.12em;color:var(--w);line-height:1;}
+.nav-logo-text span{color:var(--ac);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.18em;color:var(--mu);text-decoration:none;text-transform:uppercase;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--ac);transform:scaleX(0);transition:transform .25s ease;}
+.nav-links a:hover{color:var(--ac);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-links a.active-page{color:var(--ac);}
+.nav-links a.active-page::after{transform:scaleX(1);}
+
+/* HAMBURGER */
+.burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px;z-index:102;}
+.burger span{width:24px;height:2px;background:var(--w);display:block;transition:all .3s ease;}
+.burger.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.burger.active span:nth-child(2){opacity:0;}
+.burger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mmenu{position:fixed;inset:0;z-index:99;background:rgba(25,25,25,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);}
+.mmenu.open{transform:translateX(0);}
+.mmenu ul{list-style:none;display:flex;flex-direction:column;gap:22px;text-align:center;}
+.mmenu a{font-family:'Raleway',sans-serif;font-weight:700;font-size:1.9rem;letter-spacing:.06em;text-transform:uppercase;color:var(--w);text-decoration:none;transition:color .2s;}
+.mmenu a:hover,.mmenu a:active{color:var(--ac);}
+.mmenu-tag{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.25em;color:var(--mu);}
+
+/* SHARED */
+section{position:relative;z-index:2;}
+.cnt{max-width:1200px;margin:0 auto;padding:0 48px;}
+.stag{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.28em;color:var(--ac);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+.stag::before{content:'//';opacity:.5;}
+.rv{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+
+/* BREADCRUMB */
+.breadcrumb{position:relative;z-index:2;padding:100px 0 0;}
+.breadcrumb-inner{display:flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.18em;color:var(--mu);text-transform:uppercase;}
+.breadcrumb-inner a{color:var(--mu);text-decoration:none;transition:color .2s;}
+.breadcrumb-inner a:hover{color:var(--ac);}
+.breadcrumb-inner .sep{opacity:.35;}
+.breadcrumb-inner .cur{color:var(--ac);}
+
+/* PAGE HEADER */
+.page-header{padding:32px 0 48px;position:relative;z-index:2;}
+.page-title{font-family:'Raleway',sans-serif;font-weight:700;font-size:clamp(2.4rem,5vw,4rem);line-height:1;letter-spacing:.02em;margin-bottom:12px;}
+.page-sub{font-size:.95rem;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;}
+
+/* FILTER BAR */
+.filter-bar{position:relative;z-index:2;padding:0 0 48px;}
+.filter-inner{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+
+/* Search input */
+.search-wrap{position:relative;flex:1;min-width:240px;}
+.search-input{width:100%;background:var(--gr);border:1px solid var(--gm);color:var(--w);font-family:'Exo 2',sans-serif;font-size:.9rem;font-weight:300;padding:13px 16px 13px 44px;outline:none;transition:border-color .2s;cursor:text;}
+.search-input::placeholder{color:var(--mu);}
+.search-input:focus{border-color:var(--ac);}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--mu);pointer-events:none;transition:color .2s;}
+.search-input:focus + .search-icon,.search-wrap:focus-within .search-icon{color:var(--ac);}
+/* clear btn */
+.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--mu);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:.9rem;line-height:1;padding:4px;display:none;transition:color .2s;}
+.search-clear:hover{color:var(--ac);}
+.search-clear.visible{display:block;}
+
+/* Status filter pills */
+.filter-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.pill{font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.16em;padding:10px 18px;text-transform:uppercase;background:var(--gr);border:1px solid var(--gm);color:var(--mu);cursor:pointer;transition:all .2s ease;white-space:nowrap;}
+.pill:hover{border-color:rgba(255,255,255,.25);color:var(--w);}
+.pill.active-all{background:var(--ac);border-color:var(--ac);color:#000;}
+.pill.active-done{background:rgba(247,156,0,.15);border-color:var(--ac);color:var(--ac);}
+.pill.active-wip{background:rgba(64,196,255,.1);border-color:var(--bl);color:var(--bl);}
+.pill.active-soon{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.3);color:var(--w);}
+
+/* Results count */
+.results-info{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.18em;color:var(--mu);white-space:nowrap;padding:10px 0;}
+.results-info span{color:var(--ac);}
+
+/* DIVIDER */
+.divider-line{height:1px;background:var(--gm);margin-bottom:48px;position:relative;z-index:2;}
+
+/* BOOKS GRID */
+.catalog-section{position:relative;z-index:2;padding-bottom:100px;}
+.bg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;}
+
+/* Book card */
+.bc{aspect-ratio:2/3;position:relative;overflow:hidden;background:var(--gr);cursor:pointer;transition:opacity .3s,transform .3s;}
+.bc:hover{z-index:5;}
+.bc.hidden{display:none;}
+.bc.fade-out{opacity:0;transform:scale(.97);}
+
+.bcbg{position:absolute;inset:0;background:linear-gradient(135deg,#1d1d1d,#272727 50%,#1d1d1d);}
+.bcbg::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 20px,rgba(247,156,0,.025) 20px,rgba(247,156,0,.025) 21px);}
+.bcbg::after{content:'';position:absolute;inset:0;background:rgba(247,156,0,.06);opacity:0;transition:opacity .3s;}
+.bc:hover .bcbg::after{opacity:1;}
+.b-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;transition:opacity .3s;z-index:1;}
+.bc:hover .b-img{opacity:.5;}
+.bn{position:absolute;top:10px;right:14px;z-index:2;font-family:'Raleway',sans-serif;font-weight:700;font-size:3.2rem;line-height:1;color:rgba(255,255,255,.06);transition:color .3s;}
+.bc:hover .bn{color:var(--ac);}
+.bst{position:absolute;top:12px;left:12px;z-index:3;font-family:'Share Tech Mono',monospace;font-size:.52rem;letter-spacing:.14em;padding:4px 9px;text-transform:uppercase;}
+.s-done{background:rgba(247,156,0,.12);color:var(--ac);border:1px solid rgba(247,156,0,.38);}
+.s-wip{background:rgba(64,196,255,.08);color:var(--bl);border:1px solid rgba(64,196,255,.3);}
+.s-soon{background:rgba(255,255,255,.04);color:var(--mu);border:1px solid rgba(255,255,255,.1);}
+.bt{position:absolute;width:100%;left:0;top:50%;transform:translateY(-50%);text-align:center;padding:0 14px;z-index:2;font-family:'Raleway',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.03em;line-height:1.3;transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.bc:hover .bt{transform:translateY(calc(-50% - 52px));}
+.bcta{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;opacity:0;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.18em;color:var(--ac);border:1px solid var(--ac);padding:8px 16px;white-space:nowrap;text-decoration:none;display:inline-block;background:rgba(25,25,25,.7);transition:opacity .3s ease .05s;}
+.bc:hover .bcta{opacity:1;}
+.ba{position:absolute;width:100%;left:0;top:50%;z-index:2;text-align:center;padding:0 14px;font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--mu);transform:translateY(calc(-50% + 40px));opacity:0;transition:opacity .3s ease .05s,transform .35s ease;}
+.bc:hover .ba{opacity:1;transform:translateY(calc(-50% + 56px));}
+.bb{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .3s;z-index:3;}
+.bc:hover .bb{transform:scaleX(1);}
+
+/* EMPTY STATE */
+.empty-state{display:none;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;gap:16px;}
+.empty-state.visible{display:flex;}
+.empty-icon{font-size:3rem;opacity:.3;}
+.empty-title{font-family:'Raleway',sans-serif;font-weight:700;font-size:1.4rem;color:rgba(255,255,255,.35);}
+.empty-sub{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.15em;color:var(--mu);}
+.empty-reset{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.18em;color:var(--ac);background:none;border:1px solid rgba(247,156,0,.3);padding:8px 20px;cursor:pointer;text-transform:uppercase;margin-top:8px;transition:all .2s;}
+.empty-reset:hover{background:var(--acd);border-color:var(--ac);}
+
+/* FOOTER */
+footer{padding:28px 48px;border-top:1px solid var(--gm);display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:2;flex-wrap:wrap;gap:16px;}
+.flogo{display:flex;align-items:center;gap:10px;}
+.flogo img{width:32px;height:32px;opacity:.55;}
+.fname{font-family:'Raleway',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase;}
+.fnote{font-family:'Share Tech Mono',monospace;font-size:.56rem;letter-spacing:.08em;color:var(--mu);max-width:480px;line-height:1.7;text-align:right;}
+.fnote a{color:var(--ac);text-decoration:none;}
+.fnote a:hover{text-decoration:underline;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .burger{display:flex;}
+  .cnt{padding:0 24px;}
+  .filter-inner{gap:10px;}
+  footer{padding:24px;}
+  .fnote{text-align:left;}
+}
+@media(max-width:600px){
+  .bg{grid-template-columns:repeat(2,1fr);}
+  .filter-inner{flex-direction:column;align-items:stretch;}
+  .search-wrap{min-width:unset;}
+  .filter-pills{justify-content:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div class="cdot" id="cdot"></div>
+<div class="cring" id="cring"></div>
+
+<!-- MOBILE MENU -->
+<div class="mmenu" id="mmenu">
+  <span class="mmenu-tag">// LIBRARY ZONE //</span>
+  <ul>
+    <li><a href="/index.html" onclick="closeMM()">Головна</a></li>
+    <li><a href="/books.html" onclick="closeMM()">Книжки</a></li>
+    <li><a href="/index.html#support" onclick="closeMM()">Підтримати</a></li>
+    <li><a href="/index.html#cta" onclick="closeMM()">Telegram</a></li>
+    <li><a href="/index.html#faq" onclick="closeMM()">FAQ</a></li>
+  </ul>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/index.html">
+    <img src="/JupiterTeam-Logo.svg" alt="Jupiter Team">
+    <div class="nav-logo-text">LIBRARY<span> ZONE</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Головна</a></li>
+    <li><a href="/books.html" class="active-page">Книжки</a></li>
+    <li><a href="/index.html#support">Підтримати</a></li>
+    <li><a href="/index.html#cta">Telegram</a></li>
+    <li><a href="/index.html#faq">FAQ</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="cnt">
+    <div class="breadcrumb-inner rv">
+      <a href="/index.html">Library Zone</a>
+      <span class="sep">/</span>
+      <span class="cur">Книжки</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="cnt">
+    <div class="rv">
+      <p class="stag">Бібліотека</p>
+      <h1 class="page-title">КАТАЛОГ ПЕРЕКЛАДІВ</h1>
+      <p class="page-sub">Фанатські переклади серії S.T.A.L.K.E.R. українською від Jupiter Team.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="cnt">
+    <div class="filter-inner rv">
+
+      <!-- Пошук -->
+      <div class="search-wrap">
+        <input class="search-input" id="search-input"
+               type="text" placeholder="Пошук за назвою або автором..."
+               autocomplete="off" spellcheck="false">
+        <!-- іконка пошуку -->
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <button class="search-clear" id="search-clear" title="Очистити">✕</button>
+      </div>
+
+      <!-- Фільтри по статусу -->
+      <div class="filter-pills">
+        <button class="pill active-all" data-filter="all">Всі</button>
+        <button class="pill" data-filter="done">Перекладено</button>
+        <button class="pill" data-filter="wip">В роботі</button>
+        <button class="pill" data-filter="soon">Незабаром</button>
+      </div>
+
+      <!-- Лічильник результатів -->
+      <div class="results-info" id="results-info">
+        Показано: <span id="count-shown">10</span> з <span id="count-total">10</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- CATALOG -->
+<section class="catalog-section">
+  <div class="cnt">
+
+    <!-- СІТКА КНИЖОК
+         data-title — для пошуку по назві
+         data-author — для пошуку по автору
+         data-status — для фільтру (done / wip / soon)
+    -->
+    <div class="bg" id="books-grid">
+
+      <div class="bc" data-title="Тіні Чорнобиля" data-author="Олександр Дядищев" data-status="done">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/TiniChornobylya-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">01</span>
+        <span class="bst s-done">Перекладено</span>
+        <div class="bt">Тіні Чорнобиля</div>
+        <!-- ✏️ Замінити href на сторінку книжки або посилання на Telegram -->
+        <a href="books/01-tini-chornobylya.html" class="bcta">ДЕТАЛЬНІШЕ →</a>
+        <div class="ba">Олександр Дядищев</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Зона Ураження" data-author="Василь Орєхов" data-status="done">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/ZonaUrazhennya-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">02</span>
+        <span class="bst s-done">Перекладено</span>
+        <div class="bt">Зона Ураження</div>
+        <a href="books/02-zona-urazhennya.html" class="bcta">ДЕТАЛЬНІШЕ →</a>
+        <div class="ba">Василь Орєхов</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Вибір Зброї" data-author="Андрій Левицький" data-status="done">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/VybirZbroi-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">03</span>
+        <span class="bst s-done">Перекладено</span>
+        <div class="bt">Вибір Зброї</div>
+        <a href="books/03-vybir-zbroi.html" class="bcta">ДЕТАЛЬНІШЕ →</a>
+        <div class="ba">Андрій Левицький</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Свинцевий Світанок Ołowiany świt" data-author="Michał Gołkowski" data-status="wip">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/SvintseviiSvitanok-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">04</span>
+        <span class="bst s-wip">В роботі</span>
+        <div class="bt">Свинцевий Світанок</div>
+        <span class="bcta" style="cursor:default;">НЕЗАБАРОМ</span>
+        <div class="ba">Michał Gołkowski</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Дім на Болоті" data-author="Олексій Калугін" data-status="wip">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/DimNaBoloti-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">05</span>
+        <span class="bst s-wip">В роботі</span>
+        <div class="bt">Дім на Болоті</div>
+        <span class="bcta" style="cursor:default;">НЕЗАБАРОМ</span>
+        <div class="ba">Олексій Калугін</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Зворотній Відлік" data-author="В'ячеслав Шалигін" data-status="soon">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/ZvorontiiVidlik-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">06</span>
+        <span class="bst s-soon">Незабаром</span>
+        <div class="bt">Зворотній Відлік</div>
+        <span class="bcta" style="cursor:default;">ОЧІКУЙТЕ</span>
+        <div class="ba">В'ячеслав Шалигін</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Мрія на Поразку" data-author="Олексій Калугін" data-status="soon">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/MriiaNaPorazku-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">07</span>
+        <span class="bst s-soon">Незабаром</span>
+        <div class="bt">Мрія на Поразку</div>
+        <span class="bcta" style="cursor:default;">ОЧІКУЙТЕ</span>
+        <div class="ba">Олексій Калугін</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Холодна Кров" data-author="Роман Глушков" data-status="soon">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/KholodnaKrov-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">08</span>
+        <span class="bst s-soon">Незабаром</span>
+        <div class="bt">Холодна Кров</div>
+        <span class="bcta" style="cursor:default;">ОЧІКУЙТЕ</span>
+        <div class="ba">Роман Глушков</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Серце Зони" data-author="Андрій Левицький" data-status="soon">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/SertseZony-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">09</span>
+        <span class="bst s-soon">Незабаром</span>
+        <div class="bt">Серце Зони</div>
+        <span class="bcta" style="cursor:default;">ОЧІКУЙТЕ</span>
+        <div class="ba">Андрій Левицький</div>
+        <div class="bb"></div>
+      </div>
+
+      <div class="bc" data-title="Зона Смерті Todeszone" data-author="Claudia Kern Bernd Frenz" data-status="soon">
+        <div class="bcbg"></div>
+        <img class="b-img" src="covers/ZonaSmerti-Book-Cover.png" alt="" onerror="this.style.display='none'">
+        <span class="bn">10</span>
+        <span class="bst s-soon">Незабаром</span>
+        <div class="bt">Зона Смерті</div>
+        <span class="bcta" style="cursor:default;">ОЧІКУЙТЕ</span>
+        <div class="ba">Claudia Kern, Bernd Frenz</div>
+        <div class="bb"></div>
+      </div>
+
+    </div>
+
+    <!-- EMPTY STATE — з'являється коли нічого не знайдено -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">📡</div>
+      <div class="empty-title">Нічого не знайдено</div>
+      <div class="empty-sub">Спробуй інший запит або змінити фільтр</div>
+      <button class="empty-reset" onclick="resetAll()">Скинути фільтри</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">
+    <img src="/JupiterTeam-Logo.svg" alt="Jupiter Team">
+    <span class="fname">LIBRARY ZONE · JUPITER TEAM</span>
+  </div>
+  <p class="fnote">
+    <!-- ✏️ Замінити посилання -->
+    <a href="https://t.me/YOUR_CHANNEL">Telegram-канал</a> &nbsp;·&nbsp;
+    Оригінальні твори належать їх авторам і правовласникам торгової марки S.T.A.L.K.E.R.<br>
+    Цей переклад є неофіційним фанатським проектом і не має комерційної мети.
+  </p>
+</footer>
+
+<script>
+// ── Cursor
+const cd=document.getElementById('cdot'),cr=document.getElementById('cring');
+if(window.matchMedia('(hover:hover)').matches){
+  document.addEventListener('mousemove',e=>{
+    cd.style.left=e.clientX+'px';cd.style.top=e.clientY+'px';
+    setTimeout(()=>{cr.style.left=e.clientX+'px';cr.style.top=e.clientY+'px';},60);
+  });
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cr.style.transform='translate(-50%,-50%) scale(1.6)';cr.style.opacity='1';});
+    el.addEventListener('mouseleave',()=>{cr.style.transform='translate(-50%,-50%) scale(1)';cr.style.opacity='.6';});
+  });
+}
+
+// ── Hamburger
+const bgr=document.getElementById('burger'),mm=document.getElementById('mmenu');
+bgr.addEventListener('click',()=>{bgr.classList.toggle('active');mm.classList.toggle('open');document.body.style.overflow=mm.classList.contains('open')?'hidden':'';});
+function closeMM(){bgr.classList.remove('active');mm.classList.remove('open');document.body.style.overflow='';}
+
+// ── Reveal
+const ro=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*80);ro.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// ── FILTER ENGINE
+const cards = Array.from(document.querySelectorAll('.bc'));
+const searchInput = document.getElementById('search-input');
+const searchClear = document.getElementById('search-clear');
+const pills = document.querySelectorAll('.pill');
+const emptyState = document.getElementById('empty-state');
+const countShown = document.getElementById('count-shown');
+const countTotal = document.getElementById('count-total');
+
+let activeFilter = 'all';
+let searchQuery = '';
+
+countTotal.textContent = cards.length;
+
+function applyFilters() {
+  const q = searchQuery.toLowerCase().trim();
+  let shown = 0;
+
+  cards.forEach(card => {
+    const title = (card.dataset.title || '').toLowerCase();
+    const author = (card.dataset.author || '').toLowerCase();
+    const status = card.dataset.status;
+
+    const matchSearch = !q || title.includes(q) || author.includes(q);
+    const matchFilter = activeFilter === 'all' || status === activeFilter;
+
+    if (matchSearch && matchFilter) {
+      card.classList.remove('hidden');
+      shown++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  countShown.textContent = shown;
+
+  if (shown === 0) {
+    emptyState.classList.add('visible');
+  } else {
+    emptyState.classList.remove('visible');
+  }
+}
+
+// Search — real-time з debounce 120ms для плавності
+let debTimer;
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value;
+  searchClear.classList.toggle('visible', searchQuery.length > 0);
+  clearTimeout(debTimer);
+  debTimer = setTimeout(applyFilters, 120);
+});
+
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  searchQuery = '';
+  searchClear.classList.remove('visible');
+  searchInput.focus();
+  applyFilters();
+});
+
+// Status pills
+pills.forEach(pill => {
+  pill.addEventListener('click', () => {
+    activeFilter = pill.dataset.filter;
+    // Reset all pill classes
+    pills.forEach(p => {
+      p.classList.remove('active-all','active-done','active-wip','active-soon');
+    });
+    // Set active class based on filter
+    const classMap = {all:'active-all',done:'active-done',wip:'active-wip',soon:'active-soon'};
+    pill.classList.add(classMap[activeFilter]);
+    applyFilters();
+  });
+});
+
+// Reset all
+function resetAll() {
+  searchInput.value = '';
+  searchQuery = '';
+  searchClear.classList.remove('visible');
+  activeFilter = 'all';
+  pills.forEach(p => p.classList.remove('active-all','active-done','active-wip','active-soon'));
+  document.querySelector('[data-filter="all"]').classList.add('active-all');
+  applyFilters();
+}
+
+// Keyboard shortcut: / або Ctrl+F відкриває пошук
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== searchInput) {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+  if (e.key === 'Escape' && document.activeElement === searchInput) {
+    searchInput.blur();
+  }
+});
+</script>
+</body>
+</html>
