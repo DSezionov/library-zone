@@ -618,7 +618,7 @@ const ro=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting)
 document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
 // Counters
 function anim(el,t,d=1400){let s=null;const st=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/d,1);el.textContent=Math.floor(p*t);if(p<1)requestAnimationFrame(st);else el.textContent=t;};requestAnimationFrame(st);}
-const co=new IntersectionObserver(e=>{if(e[0].isIntersecting){anim(document.getElementById('cb'),3);anim(document.getElementById('cf'),370);co.disconnect();}},{threshold:.4});
+const co=new IntersectionObserver(e=>{if(e[0].isIntersecting){anim(document.getElementById('cb'),4);anim(document.getElementById('cf'),374);co.disconnect();}},{threshold:.4});
 const sg=document.querySelector('.sgrid');if(sg)co.observe(sg);
 // FAQ
 function tf(btn){const it=btn.parentElement;const w=it.classList.contains('open');document.querySelectorAll('.fi').forEach(i=>i.classList.remove('open'));if(!w)it.classList.add('open');}
